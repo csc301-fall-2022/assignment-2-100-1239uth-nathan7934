@@ -1,0 +1,7 @@
+/* TailwindCSS will import all of its functionality into this file */
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
