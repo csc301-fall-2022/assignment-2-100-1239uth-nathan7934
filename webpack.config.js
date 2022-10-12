@@ -6,7 +6,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.tsx',
     output: {
         path: path.join(__dirname, '/dist'), // Specify the bundled output directory
         filename: 'bundle.js'
@@ -44,7 +44,16 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     "css-loader", "postcss-loader"
                 ]
+            },
+            { // We could use '@babel/preset-typescript here', but 'ts-loader' performs type checks
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
             }
         ]
+    },
+
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
     }
 }
