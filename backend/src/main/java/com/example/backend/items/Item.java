@@ -28,8 +28,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String name, String description, Float price, String pictureUrl) {
-        this.id = id;
+    public Item(String name, String description, Float price, String pictureUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
