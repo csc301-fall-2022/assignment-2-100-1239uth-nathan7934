@@ -1,4 +1,6 @@
-package com.example.backend.items;
+package com.example.backend.item_in_cart;
+
+import com.example.backend.items.Item;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PostLoad;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,10 +35,9 @@ public class ItemInCart {
     public ItemInCart() {
     }
 
-    public ItemInCart(Integer quantity, Item item, Float price) {
+    public ItemInCart(Integer quantity, Item item) {
         this.quantity = quantity;
         this.item = item;
-        this.price = price;
     }
 
     @Override
@@ -75,15 +75,10 @@ public class ItemInCart {
     }
 
     public Float getPrice() {
-        return price;
+        return this.quantity * this.item.getPrice();
     }
 
     public void setPrice(Float price) {
         this.price = price;
-    }
-
-    @PostLoad
-    public void postLoad() {
-        this.price = item.getPrice() * quantity;
     }
 }

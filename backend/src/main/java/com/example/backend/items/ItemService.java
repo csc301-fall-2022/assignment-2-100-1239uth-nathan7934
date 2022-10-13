@@ -3,6 +3,7 @@ package com.example.backend.items;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -16,7 +17,11 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public void addNewItem(Item item) {
-        itemRepository.save(item);
+    public Item addNewItem(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public Optional<Item> getByName(String name) {
+        return itemRepository.findByName(name);
     }
 }

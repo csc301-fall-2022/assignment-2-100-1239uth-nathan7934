@@ -1,6 +1,6 @@
 package com.example.backend.cart;
 
-import com.example.backend.items_in_cart.ItemInCart;
+import com.example.backend.item_in_cart.ItemInCart;
 import com.example.backend.user.User;
 
 import javax.persistence.CascadeType;
