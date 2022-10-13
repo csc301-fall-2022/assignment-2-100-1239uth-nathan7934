@@ -1,15 +1,17 @@
 package com.example.backend.cart;
 
-import com.example.backend.items.ItemInCart;
+import com.example.backend.items_in_cart.ItemInCart;
+import com.example.backend.user.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -18,7 +20,7 @@ import java.util.List;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Cart")
-@Table(name = "cart")
+@Table(name = "carts")
 public class Cart {
     @Id
     @SequenceGenerator(name = "cart_sequence", sequenceName = "cart_sequence", allocationSize = 1)
@@ -31,25 +33,25 @@ public class Cart {
     @Transient
     private Integer length;
 
-//    @OneToOne(mappedBy = "cart")
-//    private User user;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Cart(List<ItemInCart> itemsInCart, Integer length) {
+    public Cart(List<ItemInCart> itemsInCart, User user) {
         this.itemsInCart = itemsInCart;
-        this.length = length;
-//        this.user = user;
+        this.user = user;
     }
 
     public Cart() {
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {
@@ -78,15 +80,10 @@ public class Cart {
     }
 
     public Integer getLength() {
-        return length;
+        return itemsInCart.size();
     }
 
     public void setLength(Integer length) {
         this.length = length;
-    }
-
-    @PostLoad
-    public void postLoad() {
-        this.length = itemsInCart.size();
     }
 }
