@@ -10,11 +10,12 @@ import javax.persistence.Table;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Item")
-@Table(name = "item")
+@Table(name = "items")
 public class Item {
     @Id
     @SequenceGenerator(name = "item_sequence", sequenceName = "item_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "item_sequence")
+    @Column(name = "item_id")
     private Long id;
     @Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
