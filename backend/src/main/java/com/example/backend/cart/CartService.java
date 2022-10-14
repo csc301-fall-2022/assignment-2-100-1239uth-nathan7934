@@ -75,4 +75,8 @@ public class CartService {
 
         return cart;
     }
+
+    public void deleteCart(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
 }

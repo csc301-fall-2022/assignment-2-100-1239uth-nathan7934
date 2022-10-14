@@ -1,6 +1,7 @@
 package com.example.backend.cart;
 
 import com.example.backend.exceptions.NotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @CrossOrigin
@@ -39,9 +43,15 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<Cart> addCart(@RequestBody(required = false) Cart cart) {
+    public ResponseEntity<Cart> addCart(@RequestBody(required = false) Cart cart) throws URISyntaxException {
+        Cart newCart = cart == null ? cartService.createCart() : cartService.createCart(cart);
+
+        HttpHeaders headers = new HttpHeaders();
+        if (cart != null)
+            headers.setLocation(new URI("/api/cart/" + cart.getId()));
         return new ResponseEntity<>(
-                cart == null ? cartService.createCart() : cartService.createCart(cart),
+                newCart,
+                headers,
                 HttpStatus.CREATED
         );
     }
@@ -59,6 +69,12 @@ public class CartController {
     @DeleteMapping("{cartId}/item/{itemId}")
     public ResponseEntity<Cart> deleteItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) throws NotFoundException {
         return new ResponseEntity<>(cartService.removeItemFromCart(cartId, itemId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{cartId}")
+    public ResponseEntity<Cart> deleteCart(@PathVariable Long cartId) {
+        cartService.deleteCart(cartId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
