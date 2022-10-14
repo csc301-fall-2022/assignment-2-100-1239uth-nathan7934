@@ -25,9 +25,17 @@ public class CartController {
 
     @GetMapping("{id}")
     public ResponseEntity<Cart> getCart(@PathVariable Long id) {
-        return this.cartService.getCart(id)
+        return cartService.getCart(id)
                 .map(cart -> new ResponseEntity<>(cart, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Cart> getCartWithDiscount(@PathVariable Long id, @RequestBody Discount responseDiscount) throws NotFoundException {
+        if (responseDiscount == null || (responseDiscount.discount() <= 0 || responseDiscount.discount() > 100))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(cartService.getCartWithDiscount(id, responseDiscount.discount()), HttpStatus.OK);
     }
 
     @PostMapping
@@ -44,8 +52,8 @@ public class CartController {
     }
 
     @PutMapping("{cartId}/item/{itemId}")
-    public ResponseEntity<Cart> updateItemQuantityFromCart(@PathVariable Long cartId, @PathVariable Long itemId, @RequestBody Quantity quantity) throws NotFoundException {
-        return new ResponseEntity<>(cartService.updateQuantityInItem(cartId, itemId, quantity.quantity()), HttpStatus.OK);
+    public ResponseEntity<Cart> updateItemQuantityFromCart(@PathVariable Long cartId, @PathVariable Long itemId, @RequestBody Quantity responseQuantity) throws NotFoundException {
+        return new ResponseEntity<>(cartService.updateQuantityInItem(cartId, itemId, responseQuantity.quantity()), HttpStatus.OK);
     }
 
     @DeleteMapping("{cartId}/item/{itemId}")
@@ -54,10 +62,13 @@ public class CartController {
     }
 
     /**
-     * RequestBody object to receive a quantity from HTTP Request
-     *
-     * @param quantity integer representing quantity of an item in cart
+     * RequestBody objects to receive a value from HTTP Request.
+     * <br/>
+     * name of attribute represents the format for the input field the client has to use.
      */
     private record Quantity(int quantity) {
+    }
+
+    private record Discount(int discount) {
     }
 }

@@ -24,6 +24,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity(name = "Cart")
 @Table(name = "carts")
 public class Cart {
+    private static final float TAX_RATE = 1.13f;
+
     @Id
     @SequenceGenerator(name = "cart_sequence", sequenceName = "cart_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "cart_sequence")
@@ -36,7 +38,17 @@ public class Cart {
     private Integer length;
 
     @Transient
+    private Float subCost;
+
+    @Transient
     private Float totalCost;
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
+    }
+
+    @Transient
+    private Integer discount;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -50,12 +62,21 @@ public class Cart {
     public Cart() {
     }
 
-    public Float getTotalCost() {
-        float totalCost = 0;
+    public Float getSubCost() {
+        float cost = 0;
         for (ItemInCart item : itemsInCart) {
-            totalCost += item.getPrice();
+            cost += item.getPrice();
         }
-        return totalCost;
+        return cost;
+    }
+
+    public void setSubCost(Float subCost) {
+        this.subCost = subCost;
+    }
+
+    public Float getTotalCost() {
+        float totalCost = getSubCost() * TAX_RATE;
+        return discount == null ? totalCost : totalCost * (100-discount)/100f;
     }
 
     public void setTotalCost(Float totalCost) {
@@ -94,6 +115,7 @@ public class Cart {
                 "id=" + id +
                 ", itemsInCart=" + itemsInCart +
                 ", length=" + length +
+                ", subCost=" + subCost +
                 ", totalCost=" + totalCost +
                 ", user=" + user +
                 '}';
@@ -122,5 +144,4 @@ public class Cart {
     public void setLength(Integer length) {
         this.length = length;
     }
-
 }

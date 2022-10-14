@@ -28,6 +28,15 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
+    @Transactional
+    public Cart getCartWithDiscount(Long id, int discount) throws NotFoundException {
+        Cart cart = cartRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("The cart with id " + id + " was not found"));
+        cart.setDiscount(discount);
+
+        return cart;
+    }
+
     public Cart createCart(Cart cart) {
         return this.cartRepository.save(cart);
     }
@@ -38,7 +47,8 @@ public class CartService {
 
     @Transactional
     public Cart addItemToCart(Long cartId, Long itemId) throws NotFoundException {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("The cart with id " + cartId + " was not found"));
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new NotFoundException("The cart with id " + cartId + " was not found"));
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("The item with id " + itemId + " was not found"));
         cart.addItem(item);
