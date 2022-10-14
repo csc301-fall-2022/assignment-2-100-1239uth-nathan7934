@@ -66,6 +66,10 @@ public class ItemInCart {
         this.quantity = quantity;
     }
 
+    public void incrementQuantity() {
+        this.quantity++;
+    }
+
     public Item getItem() {
         return item;
     }

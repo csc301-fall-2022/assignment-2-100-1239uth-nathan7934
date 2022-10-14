@@ -1,6 +1,6 @@
 package com.example.backend.item_in_cart;
 
-import com.example.backend.exceptions.ItemNotFoundException;
+import com.example.backend.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,9 +23,9 @@ public class ItemInCartService {
     }
 
     @Transactional
-    public ItemInCart updateItemQuantity(Long id, Integer quantity) throws ItemNotFoundException {
+    public ItemInCart updateItemQuantity(Long id, Integer quantity) throws NotFoundException {
         ItemInCart item = repository.findById(id)
-                .orElseThrow(() -> new ItemNotFoundException("Item with id " + id + " not found."));
+                .orElseThrow(() -> new NotFoundException("Item with id " + id + " not found."));
 
         if (quantity != null && quantity >= 0)
             item.setQuantity(quantity);
