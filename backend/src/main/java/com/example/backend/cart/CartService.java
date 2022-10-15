@@ -1,5 +1,7 @@
 package com.example.backend.cart;
 
+import com.example.backend.discount.Discount;
+import com.example.backend.discount.DiscountRepository;
 import com.example.backend.exceptions.NotFoundException;
 import com.example.backend.item_in_cart.ItemInCart;
 import com.example.backend.item_in_cart.ItemInCartRepository;
@@ -17,11 +19,14 @@ public class CartService {
     private final ItemRepository itemRepository;
     private final ItemInCartRepository itemInCartRepository;
 
+    private final DiscountRepository discountRepository;
+
     @Autowired
-    public CartService(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository) {
+    public CartService(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, DiscountRepository discountRepository) {
         this.cartRepository = cartRepository;
         this.itemRepository = itemRepository;
         this.itemInCartRepository = itemInCartRepository;
+        this.discountRepository = discountRepository;
     }
 
     public Optional<Cart> getCart(Long id) {
@@ -29,10 +34,14 @@ public class CartService {
     }
 
     @Transactional
-    public Cart getCartWithDiscount(Long id, int discount) throws NotFoundException {
+    public Cart getCartWithDiscount(Long id, String code) throws NotFoundException {
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("The cart with id " + id + " was not found"));
-        cart.setDiscount(discount);
+
+        Discount discount = discountRepository.findDiscountByCode(code)
+                .orElseThrow(() -> new NotFoundException("The discount code " + code + " does not exist"));
+
+        cart.setDiscount(discount.getDiscountAmount());
 
         return cart;
     }

@@ -7,11 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -34,12 +35,12 @@ public class CartController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Cart> getCartWithDiscount(@PathVariable Long id, @RequestBody Discount responseDiscount) throws NotFoundException {
-        if (responseDiscount == null || (responseDiscount.discount() <= 0 || responseDiscount.discount() > 100))
+    @PatchMapping("{id}")
+    public ResponseEntity<Cart> getCartWithDiscount(@PathVariable Long id, @RequestParam(name = "code") String discountCode) throws NotFoundException {
+        if (discountCode.length() != 6)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>(cartService.getCartWithDiscount(id, responseDiscount.discount()), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getCartWithDiscount(id, discountCode), HttpStatus.OK);
     }
 
     @PostMapping
@@ -61,9 +62,9 @@ public class CartController {
         return new ResponseEntity<>(cartService.addItemToCart(cartId, itemId), HttpStatus.OK);
     }
 
-    @PutMapping("{cartId}/item/{itemId}")
-    public ResponseEntity<Cart> updateItemQuantityFromCart(@PathVariable Long cartId, @PathVariable Long itemId, @RequestBody Quantity responseQuantity) throws NotFoundException {
-        return new ResponseEntity<>(cartService.updateQuantityInItem(cartId, itemId, responseQuantity.quantity()), HttpStatus.OK);
+    @PatchMapping("{cartId}/item/{itemId}")
+    public ResponseEntity<Cart> updateItemQuantityFromCart(@PathVariable Long cartId, @PathVariable Long itemId, @RequestParam int quantity) throws NotFoundException {
+        return new ResponseEntity<>(cartService.updateQuantityInItem(cartId, itemId, quantity), HttpStatus.OK);
     }
 
     @DeleteMapping("{cartId}/item/{itemId}")
@@ -75,16 +76,5 @@ public class CartController {
     public ResponseEntity<Cart> deleteCart(@PathVariable Long cartId) {
         cartService.deleteCart(cartId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    /**
-     * RequestBody objects to receive a value from HTTP Request.
-     * <br/>
-     * name of attribute represents the format for the input field the client has to use.
-     */
-    private record Quantity(int quantity) {
-    }
-
-    private record Discount(int discount) {
     }
 }

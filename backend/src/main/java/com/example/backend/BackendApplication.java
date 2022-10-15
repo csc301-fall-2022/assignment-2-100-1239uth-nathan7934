@@ -4,6 +4,8 @@ import com.example.backend.cart.Cart;
 import com.example.backend.cart.CartRepository;
 import com.example.backend.category.Category;
 import com.example.backend.category.CategoryRepository;
+import com.example.backend.discount.Discount;
+import com.example.backend.discount.DiscountRepository;
 import com.example.backend.item_in_cart.ItemInCart;
 import com.example.backend.items.Item;
 import com.example.backend.items.ItemRepository;
@@ -23,8 +25,17 @@ public class BackendApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(CartRepository cartRepository, ItemRepository itemRepository, CategoryRepository categoryRepository) {
+    CommandLineRunner commandLineRunner(CartRepository cartRepository, ItemRepository itemRepository, CategoryRepository categoryRepository, DiscountRepository discountRepository) {
         return args -> {
+            Discount discount1 = new Discount("ABC050", 50);
+            Discount discount2 = new Discount("ABC010", 10);
+            Discount discount3 = new Discount("ABC100", 100);
+            List<Discount> discounts = new ArrayList<>();
+            discounts.add(discount1);
+            discounts.add(discount2);
+            discounts.add(discount3);
+            discountRepository.saveAll(discounts);
+
             Category category = categoryRepository.save(new Category("clothing", new ArrayList<>()));
             Item item1 = new Item("hat", "beanie", 9.99f, "https://previews.123rf.com/images/jemastock/jemastock1802/jemastock180203579/95517489-beanie-winter-hat-icon-vector-illustration-graphic-design.jpg", category);
             List<Item> items = new ArrayList<>();
