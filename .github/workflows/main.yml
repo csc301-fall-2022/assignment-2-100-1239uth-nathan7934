@@ -20,10 +20,10 @@ jobs:
           distribution: 'adopt'
 
       - name: Build
-        run: mvn -f pom.xml --batch-mode -DskipTests package
+        run: mvn -f backend/pom.xml --batch-mode -DskipTests package
 
       - name: Test
-        run: mvn -f pom.xml --batch-mode -Dmaven.test.failure.ignore=true test
+        run: mvn -f backend/pom.xml --batch-mode -Dmaven.test.failure.ignore=true test
 
       - name: Report
         uses: dorny/test-reporter@v1
