@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(properties = {"job.autorun.enabled=false"})
 class CartServiceTest {
 
     @Autowired

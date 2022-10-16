@@ -12,6 +12,7 @@ import com.example.backend.items.ItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class BackendApplication {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "job.autorun", name = "enabled", havingValue = "true", matchIfMissing = true)
     CommandLineRunner commandLineRunner(CartRepository cartRepository, ItemRepository itemRepository, CategoryRepository categoryRepository, DiscountRepository discountRepository) {
         return args -> {
             Discount discount1 = new Discount("ABC050", 50);
@@ -37,15 +39,11 @@ public class BackendApplication {
             discountRepository.saveAll(discounts);
 
             Category category = categoryRepository.save(new Category("clothing", new ArrayList<>()));
+
             Item item1 = new Item("hat", "beanie", 9.99f, "https://previews.123rf.com/images/jemastock/jemastock1802/jemastock180203579/95517489-beanie-winter-hat-icon-vector-illustration-graphic-design.jpg", category);
             Item item2 = new Item("pant", "jeans", 44.99f, "https://media.istockphoto.com/vectors/pants-cartoon-vector-id1076492576?k=20&m=1076492576&s=612x612&w=0&h=905nrZDJOI6SIVT_9nG3VbvE_vuZXBXUv5luZOXOyxU=", category);
             Item item3 = new Item("shirt", "t-shirt", 19.99f, "https://www.pngitem.com/pimgs/m/172-1722226_t-shirt-purple-clip-art-blue-shirt-clipart.png", category);
-            List<Item> items = new ArrayList<>();
-            items.add(item1);
-            items.add(item2);
-            items.add(item3);
-            items = itemRepository.saveAll(items);
-
+            List<Item> items = itemRepository.saveAll(List.of(item1, item2, item3));
 
             List<ItemInCart> itemInCartList = new ArrayList<>();
             itemInCartList.add(new ItemInCart(1, items.get(2)));
