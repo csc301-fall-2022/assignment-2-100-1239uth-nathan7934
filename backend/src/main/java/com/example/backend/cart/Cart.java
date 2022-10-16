@@ -98,8 +98,13 @@ public class Cart {
         this.itemsInCart.remove(itemInCart);
     }
 
-    public void updateItemQuantity(ItemInCart item, int newQuantity) {
-        this.itemsInCart.get(itemsInCart.indexOf(item)).setQuantity(newQuantity);
+    public boolean updateItemQuantity(ItemInCart item, int newQuantity) {
+        int itemInCart = itemsInCart.indexOf(item);
+        if (itemInCart != -1) {
+            this.itemsInCart.get(itemInCart).setQuantity(newQuantity);
+            return true;
+        }
+        return false;
     }
 
     public User getUser() {
@@ -139,7 +144,11 @@ public class Cart {
     }
 
     public Integer getLength() {
-        return itemsInCart.size();
+        int count = 0;
+        for (ItemInCart itemInCart : itemsInCart) {
+            count += itemInCart.getQuantity();
+        }
+        return count;
     }
 
     public void setLength(Integer length) {
