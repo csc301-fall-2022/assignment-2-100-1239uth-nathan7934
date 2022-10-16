@@ -139,7 +139,11 @@ public class Cart {
     }
 
     public Integer getLength() {
-        return itemsInCart.size();
+        int count = 0;
+        for (ItemInCart itemInCart : itemsInCart) {
+            count += itemInCart.getQuantity();
+        }
+        return count;
     }
 
     public void setLength(Integer length) {
