@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -143,5 +144,17 @@ public class Cart {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cart cart)) return false;
+        return Objects.equals(id, cart.id) && Objects.equals(itemsInCart, cart.itemsInCart) && Objects.equals(length, cart.length) && Objects.equals(subCost, cart.subCost) && Objects.equals(totalCost, cart.totalCost) && Objects.equals(discount, cart.discount) && Objects.equals(user, cart.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, itemsInCart, length, subCost, totalCost, discount, user);
     }
 }
