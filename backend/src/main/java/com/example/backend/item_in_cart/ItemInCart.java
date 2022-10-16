@@ -25,7 +25,7 @@ public class ItemInCart {
     private Long id;
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private Item item;
     @Transient
