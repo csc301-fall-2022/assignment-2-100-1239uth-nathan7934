@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AppContext } from './components/AppContext';
 import Marketplace from './views/Marketplace';
 import Checkout from "./views/Checkout";
+import ShoppingCart from './components/CartItem';
 
 // Interfaces as expected from the API
 
@@ -28,7 +29,7 @@ interface ICart {
     length: number,
     subCost: number,
     totalCost: number,
-    discount: number
+    discount?: number
 }
 interface ICategory {
     id: number,
@@ -38,7 +39,7 @@ interface ICategory {
 
 export {IItem, IItemInCart, ICart, ICategory};
 
-const API_ROOT: string = "https://shoppinglist301.herokuapp.com/api";
+export const API_ROOT: string = "https://shoppinglist301.herokuapp.com/api";
 
 function App() {
 
@@ -81,46 +82,20 @@ function App() {
         });
 
         // Get the new cart from the API
-        // const cartRequestUrl = API_ROOT + "/cart";
-        // console.log("Requesting new cart...");
-        // fetch(cartRequestUrl, { method: 'POST' })
-        // .then((response) => {
-        //     response.json()
-        //     .then((parsedJson) => {
-        //         setCart(parsedJson);
-        //         console.log("New cart received.");
-        //     })
-        //     .catch(() => {
-        //         console.log("The cart was was either not created or received.");
-        //     });
-        // });
-
-        // return(() => {
-        //     // cleanup - remove cart from DB
-        //     if (cart != null) {
-        //         console.log('Removing cart from DB...');
-        //         const cartDeleteURL = API_ROOT + `/cart/${cart.id}`;
-        //         fetch(cartDeleteURL, { method: "DELETE" });
-        //     }
-        // });
+        const cartRequestUrl = API_ROOT + "/cart";
+        console.log("Requesting new cart...");
+        fetch(cartRequestUrl, { method: 'POST' })
+        .then((response) => {
+            response.json()
+            .then((parsedJson) => {
+                setCart(parsedJson);
+                console.log("New cart received.");
+            })
+            .catch(() => {
+                console.log("The cart was was either not created or received.");
+            });
+        });
     }, []);
-
-    // React.useEffect(() => {
-    //     const cartRequestUrl = API_ROOT + "/cart";
-    //     fetch(cartRequestUrl, { method: 'POST' })
-    //     .then((response) => {
-    //         response.json()
-    //         .then((parsedJson) => {setCart(parsedJson)});
-    //     });
-    // }, []);
-
-    // React.useEffect(() => {
-    //     return () => {
-    //         // cleanup - remove cart from DB
-    //         const cartDeleteURL = API_ROOT + `/cart/${cart.id}`;
-    //         fetch(cartDeleteURL, { method: "DELETE" });
-    //     }
-    // }, [])
 
     const providerValue = useMemo(() => (
         {items, setItems,

@@ -28,7 +28,7 @@ function ItemCategory(props: IProps) {
     }
 
     return(
-        <div className=''>
+        <div className='mb-2'>
             <div className='flex relative w-full h-12 bg-blue-100 rounded-md inline-block border border-gray-200'>
                 <div className='relative left-3 top-2 text-xl font-medium text-blue-900'>{name}</div>
                 <button className='absolute right-4 top-[4px] text-3xl text-blue-900 font-semibold font-mono hover:text-blue-600'
@@ -41,7 +41,7 @@ function ItemCategory(props: IProps) {
             </div>
             <AnimateHeight duration={750} height={height} easing='ease-in-out'
             className='overflow-hidden rounded-b-md border-b border-x shadow-sm'>
-                <div className='flex w-full inline-block justify-center'>
+                <div className='flex flex-wrap w-full inline-block justify-center'>
                     {renderItems()}
                 </div>
             </AnimateHeight>
