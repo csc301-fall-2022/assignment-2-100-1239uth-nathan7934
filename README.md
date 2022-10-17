@@ -15,10 +15,10 @@ Java 17. You can run tests by going into the `backend` directory and running `mv
 If you do not have the languages setup, here are some screenshots proving our tests run!
 
 Here are the tests running in IntelliJ:
-![](images/Screen Shot 2022-10-16 at 11.55.33 PM.png)
+![](images/IntelliJUnitTests.png)
 
 And here is the GitHub actions workflow running the tests:
-![](images/Screen Shot 2022-10-16 at 11.57.00 PM.png)
+![](images/GitHubActionsTests.png)
 
 GitHub actions is set to automatically run the tests each time some commits are pushed
 to the repository. This means they will run without us needing to do anything.
