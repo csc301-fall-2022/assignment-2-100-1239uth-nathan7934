@@ -80,7 +80,8 @@ public class CartService {
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("The cart with id " + cartId + " was not found"));
         ItemInCart item = itemInCartRepository.findById(itemInCartId)
                 .orElseThrow(() -> new NotFoundException("The item in cart with id " + itemInCartId + " was not found"));
-        cart.updateItemQuantity(item, newQuantity);
+        if (!cart.updateItemQuantity(item, newQuantity))
+            throw new NotFoundException("the item " + item.getId() + " in cart " + cart.getId() + " was not found");
 
         return cart;
     }

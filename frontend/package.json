@@ -17,16 +17,23 @@
   },
   "homepage": "https://github.com/csc301-fall-2022/assignment-2-100-1239uth-nathan7934#readme",
   "dependencies": {
+    "clsx": "^1.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-animate-height": "^3.0.4",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.4.2",
+    "react-router-dom": "^6.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@babel/preset-env": "^7.19.4",
     "@babel/preset-react": "^7.18.6",
+    "@types/history": "^5.0.0",
     "@types/node": "^18.8.4",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/react-router": "^5.1.19",
+    "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.12",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
