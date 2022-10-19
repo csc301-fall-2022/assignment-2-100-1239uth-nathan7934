@@ -1,3 +1,5 @@
+
+version: '3'
 services:
   postgres:
     container_name: postgres
@@ -11,17 +13,38 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - webapp
     restart: unless-stopped
 
   backend:
     build: backend
-    depends_on: postgres
+    container_name: shopping-list-backend
+    image: 1239uth/shopping-list-backend:latest
+    depends_on:
+     - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: uthmanmohamed
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
     ports:
       - "8080:8080"
+    networks:
+      - webapp
+
+  frontend:
+    build: frontend
+    container_name: shopping-list-frontend
+    image: 1239uth/shopping-list-frontend:latest
+    depends_on:
+     - backend
+    ports:
+      - "3000:8081"
+    networks:
+      - webapp
 
 networks:
-  postgres:
+  webapp:
     driver: bridge
 
 volumes:
