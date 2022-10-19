@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { IItem, IItemInCart, API_ROOT } from '../App';
-import { AppContext } from './AppContext';
+import {API_ROOT, ICart, IItem, IItemInCart} from '../App';
 
 interface IProps {
-   item: IItem
-} 
+    item: IItem
+    cart: ICart
+    setCart: React.Dispatch<React.SetStateAction<ICart>>
+}
 
 function ItemBox(props: IProps) {
 
     const thisItem = props.item;
-    const {cart, setCart} = React.useContext(AppContext)
+    const {cart, setCart} = props;
 
     const addItemToCart = () => {
-        
+
         // First perform a check to see if the item is already in the cart
         const itemsInCart: IItemInCart[] = cart.itemsInCart;
         let itemFound: boolean = false;
@@ -31,33 +32,33 @@ function ItemBox(props: IProps) {
         if (itemFound) {
             const newQuantity = itemInCartQty + 1;
             const cartRequestUrl = API_ROOT + `/cart/${cart.id}/item/${itemInCartID}?quantity=${newQuantity}`;
-            fetch(cartRequestUrl, { method: 'PATCH' })
-            .then((response) => {
-                response.json()
-                .then((parsedJson) => {
-                    setCart(parsedJson);
-                    console.log("Updated cart received.");
-                })
-                .catch(() => {
-                    console.log("Something went wrong.");
+            fetch(cartRequestUrl, {method: 'PATCH'})
+                .then((response) => {
+                    response.json()
+                        .then((parsedJson) => {
+                            setCart(parsedJson);
+                            console.log("Updated cart received.");
+                        })
+                        .catch(() => {
+                            console.log("Something went wrong.");
+                        });
                 });
-            });
             return;
         }
 
-        // If the item isnt in our cart, do a post request
+        // If the item isn't in our cart, do a post request
         const cartRequestUrl = API_ROOT + `/cart/${cart.id}/item/${thisItem.id}`;
-        fetch(cartRequestUrl, { method: 'POST' })
-        .then((response) => {
-            response.json()
-            .then((parsedJson) => {
-                setCart(parsedJson);
-                console.log("Updated cart received.");
-            })
-            .catch(() => {
-                console.log("Something went wrong.");
+        fetch(cartRequestUrl, {method: 'POST'})
+            .then((response) => {
+                response.json()
+                    .then((parsedJson) => {
+                        setCart(parsedJson);
+                        console.log("Updated cart received.");
+                    })
+                    .catch(() => {
+                        console.log("Something went wrong.");
+                    });
             });
-        });
     }
 
     return (
@@ -73,14 +74,16 @@ function ItemBox(props: IProps) {
                     <div className='float-right'>
                         <button className='transition duration-300 ease-in-out bg-blue-200 hover:bg-blue-300 
                         px-2 rounded-md leading-6 shadow-sm text-blue-900 font-medium'
-                        onClick={() => {addItemToCart()}}>
+                                onClick={() => {
+                                    addItemToCart()
+                                }}>
                             Add
                         </button>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </div>
     )
 }

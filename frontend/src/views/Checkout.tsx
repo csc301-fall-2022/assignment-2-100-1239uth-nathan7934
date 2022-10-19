@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { AppContext } from '../components/AppContext';
-import { IItem, IItemInCart, ICart, API_ROOT } from '../App';
-import { Link } from 'react-router-dom';
+import {API_ROOT, ICart, IItemInCart} from '../App';
+import {Link} from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
-function Checkout() {
+interface CheckoutProps {
+    cart: ICart
+    setCart: React.Dispatch<React.SetStateAction<ICart>>
+}
 
-    const {cart, setCart} = React.useContext(AppContext);
+function Checkout(props: CheckoutProps) {
+
+    const {cart, setCart} = props;
+
 
     // In case any vals are used when the cart is still loading
-    let subCost = 0; let totalCost = 0; let cartLength = 0;
+    let subCost = 0;
+    let totalCost = 0;
+    let cartLength = 0;
     if (cart != null) {
         subCost = cart.subCost;
         totalCost = cart.totalCost;
@@ -18,35 +25,35 @@ function Checkout() {
 
     const renderCartItems = () => {
         if (cart.length == 0) {
-            return(<div className='text-sm py-4 mx-4 border-b'>
-            There are no items in your cart. Go add some!
+            return (<div className='text-sm py-4 mx-4 border-b'>
+                There are no items in your cart. Go add some!
             </div>);
         }
         const itemsInCart: IItemInCart[] = cart.itemsInCart;
         const itemsList: React.ReactElement[] = [];
         itemsInCart.forEach((item: IItemInCart, index: number) => {
-            itemsList.push(<CartItem itemInCart={item} key={index}/>);
+            itemsList.push(<CartItem itemInCart={item} key={index} cart={cart} setCart={setCart}/>);
         });
-        return(<>{itemsList}</>);
+        return (<>{itemsList}</>);
     }
 
     const placeOrder = () => {
         const cartRequestUrl = API_ROOT + "/cart";
         console.log("Requesting new cart...");
-        fetch(cartRequestUrl, { method: 'POST' })
-        .then((response) => {
-            response.json()
-            .then((parsedJson) => {
-                setCart(parsedJson);
-                console.log("New cart received.");
-            })
-            .catch(() => {
-                console.log("The cart was was either not created or received.");
+        fetch(cartRequestUrl, {method: 'POST'})
+            .then((response) => {
+                response.json()
+                    .then((parsedJson) => {
+                        setCart(parsedJson);
+                        console.log("New cart received.");
+                    })
+                    .catch(() => {
+                        console.log("The cart was was either not created or received.");
+                    });
             });
-        });
     }
 
-    return(<>
+    return (<>
         <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100'>
             <div className='w-5/6 lg:w-2/3 xl:w-1/2 min-w-[580px]'>
                 <div className='flex w-full mt-10 mb-14 justify-center text-4xl font-sans font-semibold'>
@@ -68,7 +75,8 @@ function Checkout() {
                                 </Link>
                             </div>
                             <div className='float-right mt-5 mr-4'>
-                                {`Subtotal (${cartLength} Items):`}<span className='ml-1 font-bold'>${subCost.toFixed(2)}</span>
+                                {`Subtotal (${cartLength} Items):`}<span
+                                className='ml-1 font-bold'>${subCost.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -94,7 +102,9 @@ function Checkout() {
                             <div className='col-span-2 justify-self-end mt-6'>
                                 <button className='transition duration-300 ease-in-out bg-blue-200 hover:bg-blue-300
                                 rounded-md px-2 py-1 shadow'
-                                onClick={() => {placeOrder()}}>
+                                        onClick={() => {
+                                            placeOrder()
+                                        }}>
                                     <span className='font-semibold text-lg'>Place Order</span>
                                 </button>
                             </div>

@@ -1,27 +1,28 @@
-import clsx from 'clsx';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import AnimateHeight from 'react-animate-height';
-import { IItem } from '../App';
+import {ICart, IItem} from '../App';
 import ItemBox from './ItemBox';
 
 interface IProps {
     name: string
     items: IItem[]
+    cart: ICart
+    setCart: React.Dispatch<React.SetStateAction<ICart>>
 }
 
 function ItemCategory(props: IProps) {
 
-    const {name, items} = props;
+    const {name, items, cart, setCart} = props;
 
     const [expanded, setExpanded] = React.useState<boolean>(true);
-    const [height, setHeight] = React.useState<string | number>('auto');
+    const [height, setHeight] = React.useState<'auto' | number>('auto');
 
     const renderItems = () => {
         const itemsList: ReactElement[] = [];
         items.forEach((item: IItem, index: number) => {
             itemsList.push(
-                <ItemBox item={item} key={index}/>
+                <ItemBox item={item} key={index} cart={cart} setCart={setCart}/>
             );
         });
         return(<>{itemsList}</>);
