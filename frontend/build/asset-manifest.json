@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/csc301-fall-2022/assignment-2-100-1239uth-nathan7934/static/css/main.4118168b.css",
+    "main.js": "/csc301-fall-2022/assignment-2-100-1239uth-nathan7934/static/js/main.e6cfd24c.js",
+    "index.html": "/csc301-fall-2022/assignment-2-100-1239uth-nathan7934/index.html",
+    "main.4118168b.css.map": "/csc301-fall-2022/assignment-2-100-1239uth-nathan7934/static/css/main.4118168b.css.map",
+    "main.e6cfd24c.js.map": "/csc301-fall-2022/assignment-2-100-1239uth-nathan7934/static/js/main.e6cfd24c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4118168b.css",
+    "static/js/main.e6cfd24c.js"
+  ]
+}
