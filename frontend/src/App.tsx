@@ -39,7 +39,7 @@ interface ICategory {
 
 export {IItem, IItemInCart, ICart, ICategory};
 
-export const API_ROOT = `http://0.0.0.0:8080/api`;
+export const API_ROOT = "https://shoppinglist301.herokuapp.com/api";
 
 function App() {
 
