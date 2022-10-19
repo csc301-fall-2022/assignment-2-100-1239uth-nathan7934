@@ -3,6 +3,8 @@ import {ReactElement} from 'react';
 import {Link} from 'react-router-dom';
 import {ICart, ICategory} from '../App';
 import ItemCategory from '../components/ItemCategory';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 interface MarketplaceProps {
     categories: ICategory[],
@@ -21,7 +23,11 @@ function Marketplace(props: MarketplaceProps) {
                 <ItemCategory name={category.name} items={category.items} key={index} cart={cart} setCart={setCart}/>
             );
         });
-        return (<>{categoryList}</>);
+        return categoryList.length === 0 ?
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <CircularProgress/>
+            </Box> :
+            categoryList;
     }
 
     const showCartSize = () => {

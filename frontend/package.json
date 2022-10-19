@@ -18,6 +18,9 @@
     "url": "https://github.com/1239uth/ShoppingList/issues"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.10",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-animate-height": "^3.0.4",
