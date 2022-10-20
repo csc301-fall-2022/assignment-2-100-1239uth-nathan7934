@@ -1,0 +1,20 @@
+name: Deploy Docker to Heroku
+
+on:
+  push:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "emporium-shopping"
+          heroku_email: "uthman.mohamed@mail.utoronto.ca"
+          usedocker: true
