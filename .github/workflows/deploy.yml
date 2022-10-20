@@ -3,7 +3,7 @@ name: Deploy Docker to Heroku
 on:
   push:
     branches:
-      - master
+      - main
       - feature
 
 jobs:
